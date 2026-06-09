@@ -17,6 +17,9 @@ stages:
         echo "Build completed successfully."
       displayName: "Run Build Commands"
     - script: |
+        cat missing-file.txt
+      displayName: "Intentional Failure Step"
+    - script: |
         mkdir output
         echo "This is the build output file from the Azure DevOps pipeline." > output/build-output.txt
         echo "Build artifact created successfully."
