@@ -1,0 +1,42 @@
+trigger:
+- main
+
+stages:
+- stage: Build
+  displayName: "Build Stage"
+  jobs:
+  - job: BuildJob
+    displayName: "Build Application"
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: |
+        echo "Starting build process..."
+        echo "Restoring dependencies..."
+        echo "Compiling application..."
+        echo "Build completed successfully."
+      displayName: "Run Build Commands"
+    - script: |
+        mkdir output
+        echo "This is the build output file from the Azure DevOps pipeline." > output/build-output.txt
+        echo "Build artifact created successfully."
+      displayName: "Create Build Output File"
+    - publish: output
+      artifact: build-artifact
+      displayName: "Publish Build Artifact"
+
+- stage: Deploy
+  displayName: "Deploy Stage"
+  dependsOn: Build
+  jobs:
+  - job: DeployJob
+    displayName: "Deploy Application"
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: |
+        echo "Starting deployment process..."
+        echo "Using build artifact from the previous stage..."
+        echo "Deploying application to the target environment..."
+        echo "Deployment completed successfully."
+      displayName: "Run Deployment Commands"
